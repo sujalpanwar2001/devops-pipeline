@@ -15,9 +15,9 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'devops-assignment-branch',
-                    credentialsId: 'gitlab',
-                    url: 'https://git.nagarro.com/GITG00641/Java/sujal-panwar.git'
+                git branch: 'main',
+                    credentialsId: 'github-token-new',
+                    url: 'https://github.com/sujalpanwar2001/devops-assignment.git'
             }
         }
         
@@ -27,7 +27,6 @@ pipeline {
             steps{
                 withSonarQubeEnv('Sonar'){
                     sh """
-                     cd dummyproject/
                      mvn clean install
                      mvn sonar:sonar
                      """
@@ -66,13 +65,12 @@ pipeline {
         stage('Test Code'){
             steps{
                 sh  """
-                    cd dummyproject/
                     mvn test
                     """
             }
             post{
                 always{
-                    junit 'dummyproject/target/surefire-reports/*.xml'
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
