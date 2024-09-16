@@ -90,7 +90,7 @@ pipeline {
             // Upload to Artifactory Stage
         stage('Upload to Artifactory') {
             steps {
-                sh 'jf rt u "/var/lib/jenkins/workspace/assignment-pipeline-github/target/*.jar" "dummyproject/${BUILD_NUMBER}/" '
+                sh 'jf rt upload "/var/lib/jenkins/workspace/assignment-pipeline-github/target/*.jar" "dummyproject/${BUILD_NUMBER}/" '
             }
         }
 }
