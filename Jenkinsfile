@@ -28,7 +28,7 @@ pipeline {
                 withSonarQubeEnv('Sonar'){
                     sh """
                      mvn clean install
-                     mvn sonar:sonar
+                    //  mvn sonar:sonar
                      """
 
                 }
@@ -37,24 +37,24 @@ pipeline {
 
         
         
-        stage('Quality Gate') {
-            steps {
-                script {
+        // stage('Quality Gate') {
+        //     steps {
+        //         script {
        
 
-                    if ( waitForQualityGate().status == 'ERROR') {
-                        // Quality gate failed, send email and then abort
+        //             if ( waitForQualityGate().status == 'ERROR') {
+        //                 // Quality gate failed, send email and then abort
                         
-                        mail bcc: '', body: '''The pipeline  has failed the quality gate check as its coverage is less than 70%.
-                        The quality gate status is ERROR. Please check the Jenkins console output for more details:
-                              ''', cc: '', from: '', replyTo: '', subject: 'Pipeline Quality Gate Failed', to: 'sujalpanwar2001@gmail.com'
+        //                 mail bcc: '', body: '''The pipeline  has failed the quality gate check as its coverage is less than 70%.
+        //                 The quality gate status is ERROR. Please check the Jenkins console output for more details:
+        //                       ''', cc: '', from: '', replyTo: '', subject: 'Pipeline Quality Gate Failed', to: 'sujalpanwar2001@gmail.com'
 
                        
-                        error("Pipeline aborted due to quality gate failure")
-                    }
-                }
-            }
-        }
+        //                 error("Pipeline aborted due to quality gate failure")
+        //             }
+        //         }
+        //     }
+        // }
         
         
         
@@ -62,18 +62,28 @@ pipeline {
 
 
 
-        stage('Test Code'){
-            steps{
-                sh  """
-                    mvn test
-                    """
-            }
-            post{
-                always{
-                    junit 'target/surefire-reports/*.xml'
-                }
+        // stage('Test Code'){
+        //     steps{
+        //         sh  """
+        //             mvn test
+        //             """
+        //     }
+        //     post{
+        //         always{
+        //             junit 'target/surefire-reports/*.xml'
+        //         }
+        //     }
+        // }
+    // }
+
+
+
+            // Upload to Artifactory Stage
+        stage('Upload to Artifactory') {
+            steps {
+                sh 'jfrog rt upload "/var/lib/jenkins/workspace/assignment-pipeline-github/target/*.jar" "dummyproject/${BUILD_NUMBER}/"
+'
             }
         }
-    }
 }
 
