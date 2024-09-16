@@ -20,20 +20,28 @@ pipeline {
                     url: 'https://github.com/sujalpanwar2001/devops-assignment.git'
             }
         }
-        
-        
 
-        stage('Build and Sonar Analysis'){
-            steps{
-                withSonarQubeEnv('Sonar'){
-                    sh """
-                     mvn clean install
-                    //  mvn sonar:sonar
-                     """
 
-                }
+                stage('build') {
+            steps {
+                sh ' mvn clean package'
             }
         }
+        
+        
+        
+
+        // stage('Build and Sonar Analysis'){
+        //     steps{
+        //         withSonarQubeEnv('Sonar'){
+        //             sh """
+        //              mvn clean install
+        //               mvn sonar:sonar
+        //              """
+
+        //         }
+        //     }
+        // }
 
         
         
