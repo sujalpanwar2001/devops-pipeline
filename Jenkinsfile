@@ -88,10 +88,17 @@ pipeline {
 
 
 
-            // Upload to Artifactory Stage
+        //     // Upload to Artifactory Stage
+        // stage('Upload to Artifactory') {
+        //     steps {
+        //         sh 'jf rt upload "/var/lib/jenkins/workspace/assignment-pipeline-github/target/*.jar" "dummyproject/${BUILD_NUMBER}/" '
+        //     }
+        // }
+
+                // Upload to Artifactory Stage
         stage('Upload to Artifactory') {
             steps {
-                sh 'jf rt upload "/var/lib/jenkins/workspace/assignment-pipeline-github/target/*.jar" "dummyproject/${BUILD_NUMBER}/" '
+                sh 'jf rt upload --url http://192.168.29.163:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} /var/lib/jenkins/workspace/assignment-pipeline-github/target/*.jar  dummyproject/'
             }
         }
 }
