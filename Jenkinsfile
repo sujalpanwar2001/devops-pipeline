@@ -8,7 +8,8 @@ pipeline {
     
         environment {
         EMAIL_RECIPIENTS = 'sujalpanwar2001@gmail.com'  // Change to your email recipient
-         ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
+         ARTIFACTORY_SERVER = 'artifactory'
+        ARTIFACTORY_REPO = 'dummyproject'  // Artifactory repository name
     }
 
     stages {
@@ -87,18 +88,21 @@ pipeline {
     // }
 
 
-
-        //     // Upload to Artifactory Stage
-        // stage('Upload to Artifactory') {
-        //     steps {
-        //         sh 'jf rt upload "/var/lib/jenkins/workspace/assignment-pipeline-github/target/*.jar" "dummyproject/${BUILD_NUMBER}/" '
-        //     }
-        // }
-
-                // Upload to Artifactory Stage
         stage('Upload to Artifactory') {
             steps {
-                sh 'jf rt upload --url http://192.168.29.163:8082/artifactory/ --access-token ${ARTIFACTORY_ACCESS_TOKEN} /var/lib/jenkins/workspace/assignment-pipeline-github/target/*.jar  dummyproject/'
+                script {
+                    def server = Artifactory.server("${ARTIFACTORY_SERVER}")
+
+                    def uploadSpec = """{
+                        "files": [{
+                            "pattern": "target/*.jar",
+                            "target": "${ARTIFACTORY_REPO}/${BUILD_NUMBER}/"
+                        }]
+                    }"""
+
+                    // Upload artifacts to Artifactory
+                    server.upload(uploadSpec)
+                }
             }
         }
 }
