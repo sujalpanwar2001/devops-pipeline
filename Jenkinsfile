@@ -10,6 +10,8 @@ pipeline {
         EMAIL_RECIPIENTS = 'sujalpanwar2001@gmail.com'  // Change to your email recipient
          ARTIFACTORY_SERVER = 'artifactory'
         ARTIFACTORY_REPO = 'dummyproject'  // Artifactory repository name
+
+        registry = "876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject"
     }
 
     stages {
@@ -107,27 +109,39 @@ pipeline {
         // }
 
                  // Build Docker Image Stage
-        stage('Building the Docker Image') {
-            steps {
-                script {
-                    sh 'docker build -t dummyproject:${BUILD_NUMBER} .'
-                        }
-            }
-        }
+        // stage('Building the Docker Image') {
+        //     steps {
+        //         script {
+        //             sh 'docker build -t dummyproject:${BUILD_NUMBER} .'
+        //                 }
+        //     }
+        // }
 
                 // Login to AWS ECR and pushing the image to ECR
         stage('Logging into AWS ECR , tagging and pushing the image to ECR') {
             steps {
                 script {
-                    sh """
-                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject
+                    // sh """
+                    // aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject
 
                     
-                        docker tag dummyproject:${BUILD_NUMBER} 876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject:${BUILD_NUMBER}
+                    //     docker tag dummyproject:${BUILD_NUMBER} 876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject:${BUILD_NUMBER}
 
-                        docker push 876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject:${BUILD_NUMBER}
+                    //     docker push 876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject:${BUILD_NUMBER}
 
 
+                    // """
+
+
+                    sh """
+                     docker.withRegistry('876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject', 'aws-creds') {
+
+                                def customImage = docker.build("dummyproject:${BUILD_NUMBER}")
+
+                                /* Push the container to the custom Registry */
+                                customImage.push()
+                                
+                            }
                     """
                 }
             }
