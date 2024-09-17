@@ -5,7 +5,7 @@
   <groupId>org.example</groupId>
   <artifactId>dummyproject</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>dummyproject</name>
   <url>http://maven.apache.org</url>
