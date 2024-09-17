@@ -88,23 +88,52 @@ pipeline {
     // }
 
 
-        stage('Upload to Artifactory') {
+        // stage('Upload to Artifactory') {
+        //     steps {
+        //         script {
+        //             def server = Artifactory.server("${ARTIFACTORY_SERVER}")
+
+        //             def uploadSpec = """{
+        //                 "files": [{
+        //                     "pattern": "target/*.jar",
+        //                     "target": "${ARTIFACTORY_REPO}/${BUILD_NUMBER}/"
+        //                 }]
+        //             }"""
+
+        //             // Upload artifacts to Artifactory
+        //             server.upload(uploadSpec)
+        //         }
+        //     }
+        // }
+
+                 // Build Docker Image Stage
+        stage('Building the Docker Image') {
             steps {
                 script {
-                    def server = Artifactory.server("${ARTIFACTORY_SERVER}")
+                    sh 'docker build -t dummyproject:${BUILD_NUMBER} .'
+                        }
+            }
+        }
 
-                    def uploadSpec = """{
-                        "files": [{
-                            "pattern": "target/*.jar",
-                            "target": "${ARTIFACTORY_REPO}/${BUILD_NUMBER}/"
-                        }]
-                    }"""
+                // Login to AWS ECR and pushing the image to ECR
+        stage('Logging into AWS ECR , tagging and pushing the image to ECR') {
+            steps {
+                script {
+                    sh """
+                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject
 
-                    // Upload artifacts to Artifactory
-                    server.upload(uploadSpec)
+                    
+                        docker tag dummyproject:${BUILD_NUMBER} 876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject:${BUILD_NUMBER}
+
+                        docker push 876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject:${BUILD_NUMBER}
+
+
+                    """
                 }
             }
         }
+
+
 }
 
 }
