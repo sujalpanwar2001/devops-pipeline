@@ -108,14 +108,14 @@ pipeline {
         //     }
         // }
 
-                 // Build Docker Image Stage
-        // stage('Building the Docker Image') {
-        //     steps {
-        //         script {
-        //             sh 'docker build -t dummyproject:${BUILD_NUMBER} .'
-        //                 }
-        //     }
-        // }
+              //   Build Docker Image Stage
+        stage('Building the Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t dummyproject:${BUILD_NUMBER} .'
+                        }
+            }
+        }
 
                 // Login to AWS ECR and pushing the image to ECR
         stage('Logging into AWS ECR , tagging and pushing the image to ECR') {
