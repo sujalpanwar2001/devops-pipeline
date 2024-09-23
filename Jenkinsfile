@@ -12,6 +12,8 @@ pipeline {
         ARTIFACTORY_REPO = 'dummyproject'  // Artifactory repository name
 
         registry = "876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject"
+
+         KUBECONFIG = credentials('kubecnfg') // Kubeconfig stored in Jenkins
     }
 
     stages {
