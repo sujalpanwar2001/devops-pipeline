@@ -157,7 +157,7 @@ pipeline {
                 script{
                     sh """ 
                         
-                        helm version
+                        kubectl version
                         """
                 }
             }
