@@ -27,13 +27,13 @@ pipeline {
         }
 
 
-        stage('Build '){
-            steps{
-                script{
-                    sh'mvn clean package'
-                }
-            }
-        }
+        // stage('Build '){
+        //     steps{
+        //         script{
+        //             sh'mvn clean package'
+        //         }
+        //     }
+        // }
 
  
         
