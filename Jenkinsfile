@@ -133,7 +133,7 @@ pipeline {
         stage('Pulling the latest image from ECR and deploying it to K8S cluster using helm chart'){
         steps{
             script{
-                sh ' helm upgrade dummyproject ./dummyproject '
+                sh ' helm upgrade dummyproject ./dummyproject   --set image.tag=${BUILD_NUMBER} '    
             }
         }
         }
