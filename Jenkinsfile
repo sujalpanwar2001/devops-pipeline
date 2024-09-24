@@ -32,7 +32,7 @@ pipeline {
             steps{
                 withSonarQubeEnv('Sonar'){
                     sh """
-                     mvn clean install
+                     mvn clean package 
                       mvn sonar:sonar
                      """
 
