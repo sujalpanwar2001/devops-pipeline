@@ -2,6 +2,7 @@
 image:
   repository: 876724398547.dkr.ecr.us-east-1.amazonaws.com/dummyproject  
   tag: latest
+  pullPolicy: Always
 
 # Deployment configuration
 replicas: 1
